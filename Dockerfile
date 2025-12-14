@@ -25,10 +25,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /app
 
 # Copy the compiled binary from the builder stage
-COPY --from=builder /app/target/release/trading-signals-backend .
+COPY --from=builder /app/target/release/subscription-backend .
 
 # Expose the port your app listens on
 EXPOSE 8080
 
 # Run the binary
-CMD ["./trading-signals-backend"]
+CMD ["./subscription-backend"]
