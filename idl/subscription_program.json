@@ -1,0 +1,251 @@
+{
+  "address": "CSZVnUNFz2nDrbCrLZgPH8m7PPLVNLvJoRU8bREh4FHA",
+  "metadata": {
+    "name": "subscription_program",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "cancel_subscription",
+      "discriminator": [
+        60,
+        139,
+        189,
+        242,
+        191,
+        208,
+        143,
+        18
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "subscription"
+          ]
+        },
+        {
+          "name": "subscription",
+          "writable": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "manual_resubscribe",
+      "discriminator": [
+        24,
+        221,
+        1,
+        112,
+        93,
+        25,
+        180,
+        70
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "subscription"
+          ]
+        },
+        {
+          "name": "subscription",
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "amount_paid",
+          "type": "u64"
+        },
+        {
+          "name": "period_days",
+          "type": "i64"
+        }
+      ]
+    },
+    {
+      "name": "retry_payment",
+      "discriminator": [
+        105,
+        199,
+        243,
+        147,
+        200,
+        214,
+        159,
+        243
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "subscription"
+          ]
+        },
+        {
+          "name": "subscription",
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "amount_paid",
+          "type": "u64"
+        },
+        {
+          "name": "period_days",
+          "type": "i64"
+        }
+      ]
+    },
+    {
+      "name": "subscribe",
+      "discriminator": [
+        254,
+        28,
+        191,
+        138,
+        156,
+        179,
+        183,
+        53
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "subscription",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "plan_tier",
+          "type": "u8"
+        },
+        {
+          "name": "amount_paid",
+          "type": "u64"
+        },
+        {
+          "name": "period_days",
+          "type": "i64"
+        }
+      ]
+    },
+    {
+      "name": "update_plan",
+      "discriminator": [
+        119,
+        112,
+        58,
+        60,
+        76,
+        205,
+        1,
+        100
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "subscription"
+          ]
+        },
+        {
+          "name": "subscription",
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "new_tier",
+          "type": "u8"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "SubscriptionAccount",
+      "discriminator": [
+        247,
+        1,
+        6,
+        72,
+        172,
+        66,
+        24,
+        128
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidStatus",
+      "msg": "Invalid subscription status"
+    },
+    {
+      "code": 6001,
+      "name": "InvalidPayment",
+      "msg": "Invalid payment amount"
+    },
+    {
+      "code": 6002,
+      "name": "AlreadyActive",
+      "msg": "Subscription already active"
+    }
+  ],
+  "types": [
+    {
+      "name": "SubscriptionAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "plan_tier",
+            "type": "u8"
+          },
+          {
+            "name": "start_time",
+            "type": "i64"
+          },
+          {
+            "name": "end_time",
+            "type": "i64"
+          },
+          {
+            "name": "is_active",
+            "type": "bool"
+          }
+        ]
+      }
+    }
+  ]
+}
