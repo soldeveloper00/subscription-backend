@@ -24,14 +24,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
-# Copy ALL release files
-COPY --from=builder /app/target/release/ ./
-
-# Find and set executable
-RUN chmod +x $(find . -maxdepth 1 -type f -executable | head -1)
+# Copy the compiled binary
+COPY --from=builder /app/target/release/trading-signals-backend .
 
 # Expose the port
 EXPOSE 8080
 
-# Run the binary (automatically finds it)
-CMD ["sh", "-c", "./$(find . -maxdepth 1 -type f -executable | head -1 | xargs basename)"]
+# Run the binary
+CMD ["./trading-signals-backend"]
