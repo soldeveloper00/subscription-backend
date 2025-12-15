@@ -103,6 +103,10 @@ curl https://subsrciption-backend-production.up.railway.app/signals</code></pre>
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    // Load environment variables from .env file (local development)
+    // This will be ignored in production where Railway sets env vars
+    dotenv::dotenv().ok();
+    
     // Get port from Railway environment or default to 8080
     let port = std::env::var("PORT")
         .unwrap_or_else(|_| "8080".to_string())
@@ -111,7 +115,14 @@ async fn main() -> std::io::Result<()> {
     
     let bind_address = format!("0.0.0.0:{}", port);
     
+    // Log environment configuration
+    let rpc_url = std::env::var("SOLANA_RPC_URL")
+        .unwrap_or_else(|_| "https://api.devnet.solana.com".to_string());
+    let network = std::env::var("NETWORK")
+        .unwrap_or_else(|_| "devnet".to_string());
+    
     println!("🚀 Trading Signals Backend starting on {}", bind_address);
+    println!("🌐 Solana Network: {} ({})", network, rpc_url);
     println!("📊 Fetching LIVE prices from CoinGecko API");
     println!("✅ Supported coins: BTC, ETH, SOL, PAXG");
     println!("📡 Health check available at: http://0.0.0.0:{}/_health", port);
@@ -133,7 +144,7 @@ async fn main() -> std::io::Result<()> {
     })
     .bind(&bind_address)
     .expect(&format!("Failed to bind to {}", bind_address))
-    .workers(2) // Reduce workers for Railway's memory limits
+    .workers(1) // Reduced to 1 for Railway memory limits
     .run()
     .await
 }
